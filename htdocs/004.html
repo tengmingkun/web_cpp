@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="HTTP协议简介 超文本传输协议（英文：HyperText Transfer Protocol，缩写：HTTP）是一种用于分布式、协作式和超媒体信息系统的应用层协议。HTTP是万维网的数据通信的基础。">
+    <meta property="og:description" content="HTTP协议简介 超文本传输协议（英文：HyperText Transfer Protocol，缩写：HTTP）是一种用于分布式、协作式和超媒体信息系统的应用层协议。HTTP是万维网的数据通信的基础。">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>HTTP协议超级详解 - 爱文飞翔 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <link rel="stylesheet" href="004_files/blog-common.css">
+    
+    <link type="text/css" rel="stylesheet" href="004_files/cnblogs.css">
+    <link type="text/css" rel="stylesheet" href="004_files/custom.css">
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="004_files/bundle-blacklowkey-mobile.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/an-wen/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/an-wen/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/an-wen/wlwmanifest.xml">
+    <script async="" src="004_files/analytics.js"></script><script>
+        var currentBlogId = 513833;
+        var currentBlogApp = 'an-wen';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'BlackLowKey';
+        var visitorUserId = '';
+        var hasCustomScript = true;
+        try {
+            if (hasCustomScript && document.referrer && document.referrer.indexOf('baidu.com') >= 0) {
+                Object.defineProperty(document, 'referrer', { value: '' });
+                Object.defineProperty(Document.prototype, 'referrer', { get: function(){ return ''; } });
+            }
+        } catch(error) { }
+    </script>
+        <script>
+            var currentPostDateAdded = '2019-07-13 12:03';
+        </script>
+    <script src="004_files/jquery-2.js"></script>
+    <script src="004_files/blog-common.js"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style>
+    
+    
+    
+     <script type="text/javascript">
+        window.codeHighlightEngine = 1
+        window.enableCodeLineNumber = false
+     </script>
+</head>
+<body class="skin-blacklowkey no-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="004_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-sitehome')">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-news')">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-q')">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-brands')">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-ing')">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga('send', 'event', 'Link', 'click', 'skin-navbar-edu')">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="004_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="004_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="004_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="004_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="004_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="004_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html">
+        <script src="004_files/tctip.js" defer="defer"></script>
+<link type="text/css" rel="stylesheet" href="004_files/myRewards.css">
+<link type="text/css" rel="stylesheet" href="004_files/feedback.css">
+<link type="text/css" rel="stylesheet" href="004_files/maodian.css">
+<script type="text/javascript">
+/* 鼠标特效 */
+var a_idx = 0;
+jQuery(document).ready(function($) {
+     $("body").click(function(e) {
+         var a = new Array("❤关注❤","❤打赏❤","❤交流❤","❤博主最帅❤","❤技术最强❤,"❤人好❤);
+         var $i = $("<span></span>").text(a[a_idx]);
+         a_idx = (a_idx + 1) % a.length;
+         var x = e.pageX,
+         y = e.pageY;
+         $i.css({
+             "z-index": 999999999999999999999999999999999999999999999999999999999999999999999,
+             "top": y - 20,
+             "left": x,
+             "position": "absolute",
+             "font-weight": "bold",
+             "color": "rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"
+         });
+         $("body").append($i);
+         $i.animate({
+             "top": y - 180,
+             "opacity": 0
+         },
+         1500,
+         function() {
+             $i.remove();
+         });
+     });
+ });
+</script>
+    </div>
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/an-wen/"><img id="blogLogo" src="004_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1 class="bounceInLeft animated"><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/an-wen/">爱文飞翔</a>
+</h1>
+<h2 class="bounceInRight animated">https://github.com/aiwenfeixiang</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/an-wen/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E7%88%B1%E6%96%87%E9%A3%9E%E7%BF%94">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/an-wen/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 49&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 43&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 410498">
+41万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/an-wen/p/11180076.html">
+    <span>HTTP协议超级详解</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<h2 id="http协议简介">HTTP协议简介</h2>
+<p>超文本传输协议（英文：<strong>H</strong>yper<strong>T</strong>ext <strong>T</strong>ransfer <strong>P</strong>rotocol，缩写：HTTP）是一种用于分布式、协作式和超媒体信息系统的应用层协议。HTTP是万维网的数据通信的基础。</p>
+<p>HTTP的发展是由蒂姆·伯纳斯-李于1989年在欧洲核子研究组织（CERN）所发起。HTTP的标准制定由万维网协会（World Wide 
+Web Consortium，W3C）和互联网工程任务组（Internet Engineering Task 
+Force，IETF）进行协调，最终发布了一系列的RFC，其中最著名的是1999年6月公布的 RFC 
+2616，定义了HTTP协议中现今广泛使用的一个版本——HTTP 1.1。</p>
+<p>2014年12月，互联网工程任务组（IETF）的Hypertext Transfer Protocol 
+Bis（httpbis）工作小组将HTTP/2标准提议递交至IESG进行讨论，于2015年2月17日被批准。 
+HTTP/2标准于2015年5月以RFC 7540正式发表，取代HTTP 1.1成为HTTP的实现标准。</p>
+<h2 id="http协议概述">HTTP协议概述</h2>
+<p>HTTP是一个客户端终端（用户）和服务器端（网站）请求和应答的标准（TCP）。通过使用网页浏览器、网络爬虫或者其它的工具，客户端发起一个
+HTTP请求到服务器上指定端口（默认端口为80）。我们称这个客户端为用户代理程序（user 
+agent）。应答的服务器上存储着一些资源，比如HTML文件和图像。我们称这个应答服务器为源服务器（origin 
+server）。在用户代理和源服务器中间可能存在多个“中间层”，比如代理服务器、网关或者隧道（tunnel）。</p>
+<p>尽管TCP/IP协议是互联网上最流行的应用，HTTP协议中，并没有规定必须使用它或它支持的层。事实上，HTTP可以在任何互联网协议上，或其
+他网络上实现。HTTP假定其下层协议提供可靠的传输。因此，任何能够提供这种保证的协议都可以被其使用。因此也就是其在TCP/IP协议族使用TCP作
+为其传输层。</p>
+<p>通常，由HTTP客户端发起一个请求，创建一个到服务器指定端口（默认是80端口）的TCP连接。HTTP服务器则在那个端口监听客户端的请求。一
+旦收到请求，服务器会向客户端返回一个状态，比如"HTTP/1.1 200 OK"，以及返回的内容，如请求的文件、错误消息、或者其它信息。</p>
+<h2 id="http工作原理">HTTP工作原理</h2>
+<p>HTTP协议定义Web客户端如何从Web服务器请求Web页面，以及服务器如何把Web页面传送给客户端。HTTP协议采用了请求/响应模型。客
+户端向服务器发送一个请求报文，请求报文包含请求的方法、URL、协议版本、请求头部和请求数据。服务器以一个状态行作为响应，响应的内容包括协议的版
+本、成功或者错误代码、服务器信息、响应头部和响应数据。</p>
+<p>以下是 HTTP 请求/响应的步骤：</p>
+<p>\1. 客户端连接到Web服务器<br>
+一个HTTP客户端，通常是浏览器，与Web服务器的HTTP端口（默认为80）建立一个TCP套接字连接。例如，<a href="http://www.baidu.com/" target="_blank">http://www.baidu.com</a>。</p>
+<p>\2. 发送HTTP请求<br>
+通过TCP套接字，客户端向Web服务器发送一个文本的请求报文，一个请求报文由请求行、请求头部、空行和请求数据4部分组成。</p>
+<p>\3. 服务器接受请求并返回HTTP响应<br>
+Web服务器解析请求，定位请求资源。服务器将资源复本写到TCP套接字，由客户端读取。一个响应由状态行、响应头部、空行和响应数据4部分组成。</p>
+<p>\4. 释放连接TCP连接<br>
+若connection 模式为close，则服务器主动关闭TCP连接，客户端被动关闭连接，释放TCP连接;若connection 模式为keepalive，则该连接会保持一段时间，在该时间内可以继续接收请求;</p>
+<p>\5. 客户端浏览器解析HTML内容<br>
+客户端浏览器首先解析状态行，查看表明请求是否成功的状态代码。然后解析每一个响应头，响应头告知以下为若干字节的HTML文档和文档的字符集。客户端浏览器读取响应数据HTML，根据HTML的语法对其进行格式化，并在浏览器窗口中显示。</p>
+<p>例如：在浏览器地址栏键入URL，按下回车之后会经历以下流程：</p>
+<ol>
+<li>浏览器向 DNS 服务器请求解析该 URL 中的域名所对应的 IP 地址;</li>
+<li>解析出 IP 地址后，根据该 IP 地址和默认端口 80，和服务器建立TCP连接;</li>
+<li>浏览器发出读取文件(URL 中域名后面部分对应的文件)的HTTP 请求，该请求报文作为 TCP 三次握手的第三个报文的数据发送给服务器;</li>
+<li>服务器对浏览器请求作出响应，并把对应的 html 文本发送给浏览器;</li>
+<li>释放 TCP连接;</li>
+<li>浏览器将该 html 文本并显示内容; 　</li>
+</ol>
+<p>　　</p>
+<p>　　<img src="004_files/877318-20180418160227278-698810818.png" alt="img" loading="lazy" class="medium-zoom-image"></p>
+<p>　　<strong>http协议是基于TCP/IP协议之上的应用层协议。</strong></p>
+<p>　　<strong>基于  请求-响应 的模式</strong></p>
+<p>　　　　HTTP协议规定,请求从客户端发出,最后服务器端响应该请求并 返回。换句话说,肯定是先从客户端开始建立通信的,服务器端在没有 接收到请求之前不会发送响应</p>
+<p>　　　　<img src="004_files/877318-20180418160433297-1726664935.png" alt="img" loading="lazy" class="medium-zoom-image"></p>
+<p>　　<strong>无状态保存</strong></p>
+<p>　　　　HTTP是一种不保存状态,即无状态(stateless)协议。HTTP协议 自身不对请求和响应之间的通信状态进行保存。也就是说在HTTP这个 级别,协议对于发送过的请求或响应都不做持久化处理。</p>
+<p>　　　　<img src="004_files/877318-20180418160546133-1479186889.png" alt="img" loading="lazy" class="medium-zoom-image"></p>
+<p>　　　　使用HTTP协议,每当有新的请求发送时,就会有对应的新响应产 
+生。协议本身并不保留之前一切的请求或响应报文的信息。这是为了更快地处理大量事务,确保协议的可伸缩性,而特意把HTTP协议设计成 
+如此简单的。可是,随着Web的不断发展,因无状态而导致业务处理变得棘手 的情况增多了。比如,用户登录到一家购物网站,即使他跳转到该站的 
+其他页面后,也需要能继续保持登录状态。针对这个实例,网站为了能 
+够掌握是谁送出的请求,需要保存用户的状态。HTTP/1.1虽然是无状态协议,但为了实现期望的保持状态功能, 
+于是引入了Cookie技术。有了Cookie再用HTTP协议通信,就可以管 理状态了。有关Cookie的详细内容稍后讲解。</p>
+<p>　　<strong>无连接</strong></p>
+<p>　　　　无连接的含义是限制每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接。采用这种方式可以节省传输时间，并
+且可以提高并发性能，不能和每个用户建立长久的连接，请求一次相应一次，服务端和客户端就中断了。但是无连接有两种方式，早期的http协议是一个请求一
+个响应之后，直接就断开了，但是现在的http协议1.1版本不是直接就断开了，而是等几秒钟，这几秒钟是等什么呢，等着用户有后续的操作，如果用户在这
+几秒钟之内有新的请求，那么还是通过之前的连接通道来收发消息，如果过了这几秒钟用户没有发送新的请求，那么就会断开连接，这样可以提高效率，减少短时间
+内建立连接的次数，因为建立连接也是耗时的，默认的好像是3秒中现在，但是这个时间是可以通过咱们后端的代码来调整的，自己网站根据自己网站用户的行为来
+分析统计出一个最优的等待时间。</p>
+<h2 id="http请求方法">HTTP请求方法</h2>
+<p>HTTP/1.1协议中共定义了八种方法（也叫“动作”）来以不同方式操作指定的资源：</p>
+<h3 id="get">GET</h3>
+<p>向指定的资源发出“显示”请求。使用GET方法应该只用在读取数据，而不应当被用于产生“副作用”的操作中，例如在Web Application中。其中一个原因是GET可能会被网络蜘蛛等随意访问。</p>
+<h3 id="head">HEAD</h3>
+<p>与GET方法一样，都是向服务器发出指定资源的请求。只不过服务器将不传回资源的本文部分。它的好处在于，使用这个方法可以在不必传输全部内容的情况下，就可以获取其中“关于该资源的信息”（元信息或称元数据）。</p>
+<h3 id="post">POST</h3>
+<p>向指定资源提交数据，请求服务器进行处理（例如提交表单或者上传文件）。数据被包含在请求本文中。这个请求可能会创建新的资源或修改现有资源，或二者皆有。</p>
+<h3 id="put">PUT</h3>
+<p>向指定资源位置上传其最新内容。</p>
+<h3 id="delete">DELETE</h3>
+<p>请求服务器删除Request-URI所标识的资源。</p>
+<h3 id="trace">TRACE</h3>
+<p>回显服务器收到的请求，主要用于测试或诊断。</p>
+<h3 id="options">OPTIONS</h3>
+<p>这个方法可使服务器传回该资源所支持的所有HTTP请求方法。用'*'来代替资源名称，向Web服务器发送OPTIONS请求，可以测试服务器功能是否正常运作。</p>
+<h3 id="connect">CONNECT</h3>
+<p>HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。通常用于SSL加密服务器的链接（经由非加密的HTTP代理服务器）。</p>
+<p>注意事项：</p>
+<ol>
+<li>方法名称是区分大小写的。当某个请求所针对的资源不支持对应的请求方法的时候，服务器应当返回状态码405（Method Not Allowed），当服务器不认识或者不支持对应的请求方法的时候，应当返回状态码501（Not Implemented）。</li>
+<li>HTTP服务器至少应该实现GET和HEAD方法，其他方法都是可选的。当然，所有的方法支持的实现都应当匹配下述的方法各自的语义定义。此外，
+除了上述方法，特定的HTTP服务器还能够扩展自定义的方法。例如PATCH（由 RFC 5789 指定的方法）用于将局部修改应用到资源<em>。</em></li>
+</ol>
+<h4 id="请求方式-get与post请求（通过form表单我们自己写写看）">请求方式: get与post请求（通过form表单我们自己写写看）</h4>
+<ul>
+<li>
+<p>GET提交的数据会放在URL之后，也就是请求行里面，以?分割URL和传输数据，参数之间以&amp;相连，如
+EditBook?name=test1&amp;id=123456.（请求头里面那个content-type做的这种参数形式，后面讲） 
+POST方法是把提交的数据放在HTTP包的请求体中.</p>
+</li>
+<li>
+<p>GET提交的数据大小有限制（因为浏览器对URL的长度有限制），而POST方法提交的数据没有限制.</p>
+</li>
+<li>
+<p>GET与POST请求在服务端获取请求数据方式不同，就是我们自己在服务端取请求数据的时候的方式不同了，这句废话昂。</p>
+</li>
+</ul>
+<h2 id="http状态码">HTTP状态码</h2>
+<p>所有HTTP响应的第一行都是状态行，依次是当前HTTP版本号，3位数字组成的状态代码，以及描述状态的短语，彼此由空格分隔。</p>
+<p>状态代码的第一个数字代表当前响应的类型：</p>
+<ul>
+<li>1xx消息——请求已被服务器接收，继续处理</li>
+<li>2xx成功——请求已成功被服务器接收、理解、并接受</li>
+<li>3xx重定向——需要后续操作才能完成这一请求</li>
+<li>4xx请求错误——请求含有词法错误或者无法被执行</li>
+<li>5xx服务器错误——服务器在处理某个正确请求时发生错误</li>
+</ul>
+<p>虽然 RFC 2616 中已经推荐了描述状态的短语，例如"200 OK"，"404 Not Found"，但是WEB开发者仍然能够自行决定采用何种短语，用以显示本地化的状态描述或者自定义信息。</p>
+<p>　　<img src="004_files/877318-20180418161321986-304902913.png" alt="img" loading="lazy"></p>
+<h2 id="url">URL</h2>
+<p>超文本传输协议（HTTP）的统一资源定位符将从因特网获取信息的五个基本元素包括在一个简单的地址中：</p>
+<ul>
+<li>传送协议。</li>
+<li>层级URL标记符号(为[//],固定不变)</li>
+<li>访问资源需要的凭证信息（可省略）</li>
+<li>服务器。（通常为域名，有时为IP地址）</li>
+<li>端口号。（以数字方式表示，若为HTTP的默认值“:80”可省略）</li>
+<li>路径。（以“/”字符区别路径中的每一个目录名称）</li>
+<li>查询。（GET模式的窗体参数，以“?”字符为起点，每个参数以“&amp;”隔开，再以“=”分开参数名称与数据，通常以UTF8的URL编码，避开字符冲突的问题）</li>
+<li>片段。以“#”字符为起点</li>
+</ul>
+<p>以http://www.luffycity.com:80/news/index.html?id=250&amp;page=1 为例, 其中：</p>
+<p>http，是协议；<br>
+www.luffycity.com，是服务器；<br>
+80，是服务器上的默认网络端口号，默认不显示；<br>
+/news/index.html，是路径（URI：直接定位到对应的资源）；<br>
+?id=250&amp;page=1，是查询。<br>
+大多数网页浏览器不要求用户输入网页中“http://”的部分，因为绝大多数网页内容是超文本传输协议文件。同样，“80”是超文本传输协议文件的常用
+端口号，因此一般也不必写明。一般来说用户只要键入统一资源定位符的一部分（www.luffycity.com:80/news
+/index.html?id=250&amp;page=1）就可以了。</p>
+<p>由于超文本传输协议允许服务器将浏览器重定向到另一个网页地址，因此许多服务器允许用户省略网页地址中的部分，比如 www。从技术上来说这样省略后的网页地址实际上是一个不同的网页地址，浏览器本身无法决定这个新地址是否通，服务器必须完成重定向的任务。</p>
+<h2 id="http请求格式请求协议">HTTP请求格式(请求协议)</h2>
+<p>　　　　<img src="004_files/867021-20180322001733298-201433635.jpg" alt="img" loading="lazy"></p>
+<p>　　　　　URL包含：/index/index2?a=1&amp;b=2；路径和参数都在这里。</p>
+<p>　　　　<img src="004_files/877318-20180418160914403-902015370.png" alt="img" loading="lazy"></p>
+<p>　　　　　　请求头里面的内容举个例子：这个length表示请求体里面的数据长度，其他的请求头里面的这些键值对，陆续我们会讲的，大概知道一下就可以了，其中有一个user-agent，算是需要你记住的吧，就是告诉你的服务端，我是用什么给你发送的请求。</p>
+<p>　　　　　　<img src="004_files/988061-20190217180939495-1485103656.png" alt="img" loading="lazy"></p>
+<p>　　　　　　</p>
+<p>　　　　　　以京东为例，看一下user-agent</p>
+<p>　　　　　　<img src="004_files/988061-20190217181850193-212820996.png" alt="img" loading="lazy"></p>
+<p>　　　　　<img src="004_files/988061-20190217182211177-715034357.png" alt="img" loading="lazy"></p>
+<p>　　　　　　看一个爬虫的例子，爬京东的时候没问题，但是爬抽屉的时候必须带着user-agent，因为抽屉对user-agent做了判断，来判断你是不是一个正常的请求，算是反扒机制的一种。</p>
+<p>　　　　　　<img src="004_files/988061-20190217200715895-666653052.png" alt="img" loading="lazy"></p>
+<p>　　　　　　打开我们保存的demo.html文件，然后通过浏览器打开看看就能看到页面效果。</p>
+<p>　　　　　　写上面这些内容的意思是让你知道有这么个请求头的存在，有些是有意义的，请求头我们还可以自己定义，就在requests模块里面那个headers={}，这个字典里面加就行。</p>
+<p>　　　　　　</p>
+<p>　　</p>
+<h2 id="http响应格式（响应协议）">HTTP响应格式（响应协议）</h2>
+<p>　　<img src="004_files/867021-20180322001744323-654009411.jpg" alt="img" loading="lazy"></p>
+<p>　　<img src="004_files/877318-20180418161014087-738990087.png" alt="img" loading="lazy"></p>
+
+</div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/an-wen/category/1502864.html" target="_blank">网络、并发</a></div>
+<div id="EntryTag">
+    标签: 
+            <a href="https://www.cnblogs.com/an-wen/tag/%E7%BD%91%E7%BB%9C%E3%80%81%E5%B9%B6%E5%8F%91/">网络、并发</a></div>
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(11180076,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow('5eb4e70c-0024-45ed-f3b8-08d6d1bc5bde');" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="004_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="004_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/an-wen/" target="_blank"><img src="004_files/20190510095148.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/an-wen/">爱文飞翔</a><br>
+            <a href="https://home.cnblogs.com/u/an-wen/followees/">关注 - 5</a><br>
+            <a href="https://home.cnblogs.com/u/an-wen/followers/">粉丝 - 56</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow('5eb4e70c-0024-45ed-f3b8-08d6d1bc5bde');return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(11180076,'Digg')">
+        <span class="diggnum" id="digg_count">125</span>
+    </div>
+    <div class="buryit" onclick="votePost(11180076,'Bury')">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/an-wen/p/11171479.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/an-wen/p/11171479.html" title="发布于 2019-07-11 17:32">Python - openpyxl 读写操作Excel</a>
+    <br>
+    <a href="https://www.cnblogs.com/an-wen/p/11180088.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/an-wen/p/11180088.html" title="发布于 2019-07-13 12:07">Django基础一之web框架的本质</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2019-07-13 12:03</span>&nbsp;
+<a href="https://www.cnblogs.com/an-wen/">爱文飞翔</a>&nbsp;
+阅读(<span id="post_view_count">276544</span>)&nbsp;
+评论(<span id="post_comment_count">33</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=11180076" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(11180076);return false;">收藏</a>&nbsp;
+<a href="javascript:void(0)" onclick="reportManager.report({ currentUserId: '', targetType: 'blogPost', targetId: '11180076', targetLink: 'https://www.cnblogs.com/an-wen/p/11180076.html', title: 'HTTP协议超级详解' })">举报</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+
+<script src="004_files/highlight.js" async="" onload="markdown_highlight()"></script>
+<script>
+    var allowComments = true, cb_blogId = 513833, cb_blogApp = 'an-wen', cb_blogUserGuid = '5eb4e70c-0024-45ed-f3b8-08d6d1bc5bde';
+    var cb_entryId = 11180076, cb_entryCreatedDate = '2019-07-13 12:03', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login('!comments');">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"><a href="https://www.cnblogs.com/cmt/p/15221787.html" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-研发管理沙龙活动')">【活动】博客园&amp;顺顺智慧联合沙龙：研发进度太慢，开发人员如何破局？</a><br><a href="https://www.aliyun.com/minisite/goods?taskCode=yds2021-07zy&amp;recordId=807539&amp;userCode=swh7dvlt" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-阿里云-cps')">【推荐】阿里云云大使特惠：新用户购ECS服务器1核2G最低价87元/年</a><br><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-ucancode')">【推荐】大型组态、工控、仿真、CAD\GIS 50万行VC++源码免费下载!</a><br><a href="https://cloud.baidu.com/campaign/bccdiscount/index.html?track=cp:bokeyuan|pf:pc|pp:H-bokeyuan-21bccsanqi-neiyewenzilian|pu:21bccsanqi-neiyewenzilian|ci:21bcc|kw:10370321" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-百度智能云')">【推荐】百度智能云超值优惠：新用户首购云服务器1核1G低至69元/年</a><br><a href="https://brands.cnblogs.com/huawei" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-华为专区')">【推荐】和开发者在一起：华为开发者社区，入驻博客园科技品牌专区</a><br><a href="https://www.cnblogs.com/cmt/p/15147135.html" target="_blank" onclick="ga('send', 'event', 'Link', 'click', 'T2-众安保险')">【推广】园子与爱卡汽车爱宝险合作，随手就可以买一份的百万医疗保险</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+             <a onclick="ga('send', 'event', 'Link', 'click', 'Pangle-C1')" target="_blank" rel="nofollow" href="https://c.gridsumdissector.com/r/?gid=gad_545_ph4hkwzt&amp;ck=32&amp;adk=442&amp;autorefresh=__AUTOREFRESH__">
+                <img style="width: 300px; height: 250px;" src="004_files/35695-20210817131346802-930113090.jpg" alt="" onload="gscmdImpress()">
+             </a>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card">
+<b>编辑推荐：</b>
+<br>
+
+· <a href="https://www.cnblogs.com/wucy/p/15188902.html" target="_blank">浅谈 C# 更改令牌 ChangeToken</a>
+    <br>
+· <a href="https://www.cnblogs.com/boostwei/p/15195643.html" target="_blank">CNN卷积神经网络详解</a>
+    <br>
+· <a href="https://www.cnblogs.com/huangxincheng/p/15204986.html" target="_blank">记一次 .NET 某流媒体独角兽 API 句柄泄漏分析</a>
+    <br>
+· <a href="https://www.cnblogs.com/nullllun/p/15205442.html" target="_blank">流量录制与回放技术实践</a>
+    <br>
+· <a href="https://www.cnblogs.com/duck-coding/p/15190943.html" target="_blank">熟悉而陌生的新朋友——IAsyncDisposable</a>
+    <br>
+</div></div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/701562/" target="_blank">红帽无情CloudLinux有爱：CentOS 8可在2025年底前获得更新支持（2021-09-03 16:25）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/701561/" target="_blank">你是用Google原生的时钟吗？小心闹钟不会响（2021-09-03 16:18）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/701560/" target="_blank">招聘信息暗示苹果正在研究RISC-V ISA架构（2021-09-03 16:11）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/701559/" target="_blank">紫光国微首推数字人民币解决方案 已在多个城市试点运行（2021-09-03 16:06）</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/701558/" target="_blank">盒马总裁侯毅：将加大全产业链投资，继续重投入、扎硬寨、打笨仗（2021-09-03 15:58）</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+       deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    <!-- 添加公告栏时钟 -->
+<div style="border-top: 1px dashed #ccc;padding: 5px;border-bottom: 1px dashed #ccc;height: 120px;">
+<div id="clockdiv">
+    <canvas id="dom" width="120" height="120">时钟canvas</canvas>
+</div>
+</div>
+<script type="text/javascript">window['__document_write_ajax_callbacks__']['3']();</script><script type="text/javascript">window['__document_write_ajax_callbacks__']['4']();</script><script type="text/javascript">window['__document_write_ajax_callbacks__']['1']();</script>
+
+<style>
+body{
+position:relative;
+}
+.img {width: 20px;height: 20px;opacity: 1;position: absolute;z-index: 100000;transition: 1s;}
+.left,.right {width: 10px;height: 10px;border-radius: 100%;position: absolute;}
+.right {right: 0;}
+.under {width: 10px;height: 10px;position: absolute;top: 5px;left: 5px;transform: rotate(45deg)}
+.text {width: 50px;font-size: 10px;line-height: 1;position: absolute;top: -1em;left: -15px;text-align: center;}
+</style>
+<script type="text/javascript">window['__document_write_ajax_callbacks__']['5']();</script><script>window['__document_write_ajax_callbacks__']['2']();</script>
+    </div>
+
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="display: block;">
+
+<table id="blogCalendar" class="Cal" title="Calendar" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar('2021/08/03'); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2021年9月</td>
+                            <td class="CalNextPrev" align="right">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar('2021/10/03'); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" abbr="日" scope="col" align="center">日</th>
+        <th class="CalDayHeader" abbr="一" scope="col" align="center">一</th>
+        <th class="CalDayHeader" abbr="二" scope="col" align="center">二</th>
+        <th class="CalDayHeader" abbr="三" scope="col" align="center">三</th>
+        <th class="CalDayHeader" abbr="四" scope="col" align="center">四</th>
+        <th class="CalDayHeader" abbr="五" scope="col" align="center">五</th>
+        <th class="CalDayHeader" abbr="六" scope="col" align="center">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="CalTodayDay" align="center">
+                            3
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        4
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            5
+                        </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            3
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                8
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            9
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block"><div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    
+<li><a href="https://www.cnblogs.com/an-wen/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/an-wen/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/an-wen/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/an-wen/RecentComments.html" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/an-wen/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"><div class="catListTag">
+<h3 class="catListTitle">我的标签</h3>
+<ul>
+        <li>
+            <a href="https://www.cnblogs.com/an-wen/tag/Flask/">Flask<span class="tag-count">(11)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/an-wen/tag/Django/">Django<span class="tag-count">(11)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/an-wen/tag/MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/">MySQL数据库<span class="tag-count">(10)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/an-wen/tag/%E5%89%8D%E7%AB%AF/">前端<span class="tag-count">(5)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/an-wen/tag/Python/">Python<span class="tag-count">(5)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/an-wen/tag/Python%E4%B9%8B%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">Python之人工智能<span class="tag-count">(2)</span></a>
+        </li>
+        <li>
+            <a href="https://www.cnblogs.com/an-wen/tag/%E7%BD%91%E7%BB%9C%E3%80%81%E5%B9%B6%E5%8F%91/">网络、并发<span class="tag-count">(2)</span></a>
+        </li>
+    
+
+</ul>
+</div>
+
+</div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔分类
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/category/1502865.html" rel="" target="">
+    Django(11)
+</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/category/1555277.html" rel="" target="">
+    Flask(11)
+</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/category/1491060.html" rel="" target="">
+    MySQL数据库(11)
+</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/category/1461419.html" rel="" target="">
+    Python(6)
+</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/category/1557718.html" rel="" target="">
+    Python人工智能(2)
+</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/category/1492388.html" rel="" target="">
+    前端(5)
+</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/category/1502864.html" rel="" target="">
+    网络、并发(2)
+</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/archive/2019/12.html" rel="" target="">
+    2019年12月(1)
+</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/archive/2019/09.html" rel="" target="">
+    2019年9月(13)
+</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/archive/2019/08.html" rel="" target="">
+    2019年8月(8)
+</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/archive/2019/07.html" rel="" target="">
+    2019年7月(13)
+</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/archive/2019/06.html" rel="" target="">
+    2019年6月(11)
+</a>
+ 
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/an-wen/archive/2019/05.html" rel="" target="">
+    2019年5月(3)
+</a>
+ 
+                </li>                
+            
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+<div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/an-wen/p/11180076.html">1. Re:HTTP协议超级详解</a></li>
+                    <li class="recent_comment_body"><p>厉害了</p>
+</li>
+                    <li class="recent_comment_author">--fairylxf</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/an-wen/p/11180076.html">2. Re:HTTP协议超级详解</a></li>
+                    <li class="recent_comment_body"><p>7888</p>
+</li>
+                    <li class="recent_comment_author">--九万字</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/an-wen/p/11180076.html">3. Re:HTTP协议超级详解</a></li>
+                    <li class="recent_comment_body"><p>好看！</p>
+</li>
+                    <li class="recent_comment_author">--想不出来名字</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/an-wen/p/11180076.html">4. Re:HTTP协议超级详解</a></li>
+                    <li class="recent_comment_body"><p>666</p>
+</li>
+                    <li class="recent_comment_author">--Kandy123</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/an-wen/p/11180076.html">5. Re:HTTP协议超级详解</a></li>
+                    <li class="recent_comment_body"><p>123123</p>
+</li>
+                    <li class="recent_comment_author">--Code-nb</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/an-wen/p/11180076.html">
+                            1. HTTP协议超级详解(276466)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/an-wen/p/11330834.html">
+                            2. Python 四大主流 Web 编程框架(72237)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/an-wen/p/11171479.html">
+                            3. Python - openpyxl 读写操作Excel(17324)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/an-wen/p/11582222.html">
+                            4. Flask 实现登陆 + session(9150)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/an-wen/p/11604093.html">
+                            5. Python人工智能第一篇：语音合成和语音识别(4200)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block"><div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/an-wen/p/11180076.html">
+                            1. HTTP协议超级详解(33)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/an-wen/p/11295186.html">
+                            2. Mysql之锁、事务绝版详解---干货！(4)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/an-wen/p/11284872.html">
+                            3. 并发编程概念大总结--干货(3)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/an-wen/p/11166744.html">
+                            4. 前端之CSS(2)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/an-wen/p/11171479.html">
+                            5. Python - openpyxl 读写操作Excel(1)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/an-wen/p/11180076.html">
+                                1. HTTP协议超级详解(125)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/an-wen/p/11330834.html">
+                                2. Python 四大主流 Web 编程框架(5)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/an-wen/p/11295186.html">
+                                3. Mysql之锁、事务绝版详解---干货！(3)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/an-wen/p/11284872.html">
+                                4. 并发编程概念大总结--干货(3)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/an-wen/p/11604093.html">
+                                5. Python人工智能第一篇：语音合成和语音识别(2)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 爱文飞翔
+<br><span id="poweredby">Powered by .NET 5.0 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    <div id="page_end_html">
+        <script type="text/javascript">
+$(function(){
+    $('#blogTitle h1').addClass('bounceInLeft animated');
+    $('#blogTitle h2').addClass('bounceInRight animated');
+    // 删除反对按钮
+    $('.buryit').remove();
+    initCommentData();
+});
+function initCommentData() {
+    $('.feedbackItem').each(function() {
+        var text = $(this).find('.feedbackListSubtitle .layer').text();
+        // 将楼层信息放到data里面
+        // $(this).find('.blog_comment_body').attr('data-louceng', text.replace(/^#/g, ''));
+        if($(this).find('.feedbackListSubtitle .louzhu').length>0) $(this).addClass('myself');
+        var avatar = $(this).find('> .feedbackCon > span').html() || 'http://pic.cnitblog.com/face/sample_face.gif';
+        $(this).find('> .feedbackCon > .blog_comment_body').append('<img class="user-avatar" src="'+avatar+'"/>')
+    });
+}
+
+$(document).ajaxComplete(function(event, xhr, settings) {
+  // 监听获取评论ajax事件
+  if(settings.url.indexOf('/mvc/blog/GetComments.aspx') >= 0) {
+    initCommentData();
+  }
+});
+</script>
+<script src="004_files/jquery-migrate-1.js"></script>
+<div id="scrollTop" style="display: none;">
+      <div class="level-2"></div>
+      <div class="level-3"></div>
+</div>
+<script src="004_files/scroll2top.js"></script>
+<script type="text/javascript">
+    UI.global_search();
+    var uvOptions = {};
+    // !important
+    (function() {
+        initScrollTop();
+    })();
+</script>
+<script src="004_files/bootstrap.js"></script>
+<script id="c_n_script" src="004_files/js.js" color="240,230,140" opacity="1" count="75" zindex="-2">
+if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+
+} else {
+
+}
+    </div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8NACB8VE9qlHm6Ujjqxvg5BCMAz4ta-u9wzqZfG0un5IbVY-gpz7y3189SYmkZPPZM99bAQOz5yCDxVCAViojDNwCQcWcm8qRtDpx4eTc_Y8_U_bd7s_h9Z7eGpgP0VMvXxUp6JBzCk2b0Beiv47JjU" />
+</body>
+</html>
+</div><script type="text/javascript">
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/an-wen/">
+            爱文飞翔
+        </a>
+        <br />
+        园龄：
+        <a href="https://home.cnblogs.com/u/an-wen/" title="入园时间：2019-05-06">
+            2年3个月
+        </a>
+        <br />
+        粉丝：
+        <a href="https://home.cnblogs.com/u/an-wen/followers/">
+            56
+        </a>
+        <br />
+        关注：
+        <a href="https://home.cnblogs.com/u/an-wen/followees/">
+            5
+        </a>
+        <div id="p_b_follow"></div>
+        <script>getFollowStatus('5eb4e70c-0024-45ed-f3b8-08d6d1bc5bde');</script></body></html>
